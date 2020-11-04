@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -59,7 +57,7 @@ class LoginPage extends StatelessWidget {
   Widget _formulario(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    final _nombre = Container(
+    final _nombreIcono = Container(
       padding: EdgeInsets.only(top: 50),
       child: Column(
         children: <Widget>[
@@ -82,15 +80,15 @@ class LoginPage extends StatelessWidget {
     return SingleChildScrollView(
         child: Column(
       children: <Widget>[
-        SafeArea(child: _nombre),
+        SafeArea(child: _nombreIcono),
         SizedBox(
-          height: 40,
+          height: 30,
         ),
         Container(
           padding: EdgeInsets.all(20),
           //margin: EdgeInsets.only(top: 20),
           width: size.width * 0.80,
-          height: 80,
+          //height: 80,
           decoration: BoxDecoration(
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(10),
@@ -101,15 +99,67 @@ class LoginPage extends StatelessWidget {
                     offset: Offset(0.0, 3.0)),
               ]),
           child: Column(
-            children: [
+            children: <Widget>[
               Text(
                 'Ingreso',
                 style: TextStyle(fontSize: 20),
-              )
+              ),
+              _crearEmail(),
+              _crearContrasena(),
+              SizedBox(
+                height: 15,
+              ),
+              _crearBoton(),
             ],
           ),
         ),
+        SizedBox(
+          height: 20,
+        ),
+        Text('Olvido su contraseña'),
+        SizedBox(
+          height: 40.0,
+        ),
       ],
     ));
+  }
+
+  Widget _crearEmail() {
+    return Container(
+        padding: EdgeInsets.all(10.0),
+        child: TextField(
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            icon: Icon(Icons.alternate_email),
+            hintText: 'ejemplo@correo.com',
+            labelText: 'Correo electronico',
+          ),
+        ));
+  }
+
+  Widget _crearContrasena() {
+    return Container(
+        padding: EdgeInsets.all(10.0),
+        child: TextField(
+            obscureText: true,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              icon: Icon(Icons.lock_outline),
+              labelText: 'Contraseña',
+            )));
+  }
+
+  Widget _crearBoton() {
+    return RaisedButton(
+      onPressed: () {},
+      child: Container(
+        child: Text('Ingresar'),
+        padding: EdgeInsets.symmetric(horizontal: 50.0),
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+      elevation: 0.0,
+      color: Colors.deepPurple,
+      textColor: Colors.white,
+    );
   }
 }
