@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formularios/src/blocs/provider.dart';
 
 class LoginPage extends StatelessWidget {
   //static final routeName = 'login';
@@ -56,6 +57,7 @@ class LoginPage extends StatelessWidget {
 
   Widget _formulario(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final bloc = Provider.of(context);
 
     final _nombreIcono = Container(
       padding: EdgeInsets.only(top: 50),
@@ -104,8 +106,8 @@ class LoginPage extends StatelessWidget {
                 'Ingreso',
                 style: TextStyle(fontSize: 20),
               ),
-              _crearEmail(),
-              _crearContrasena(),
+              _crearEmail(bloc),
+              _crearContrasena(bloc),
               SizedBox(
                 height: 15,
               ),
@@ -124,29 +126,42 @@ class LoginPage extends StatelessWidget {
     ));
   }
 
-  Widget _crearEmail() {
-    return Container(
-        padding: EdgeInsets.all(10.0),
-        child: TextField(
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            icon: Icon(Icons.alternate_email),
-            hintText: 'ejemplo@correo.com',
-            labelText: 'Correo electronico',
-          ),
-        ));
-  }
-
-  Widget _crearContrasena() {
-    return Container(
-        padding: EdgeInsets.all(10.0),
-        child: TextField(
-            obscureText: true,
+  Widget _crearEmail(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.emailStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Container(
+          padding: EdgeInsets.all(10.0),
+          child: TextField(
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-              icon: Icon(Icons.lock_outline),
-              labelText: 'Contraseña',
-            )));
+                icon: Icon(Icons.alternate_email),
+                hintText: 'ejemplo@correo.com',
+                labelText: 'Correo electronico',
+                counterText: snapshot.data),
+            onChanged: bloc.changeEmail,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _crearContrasena(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.passwordStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return Container(
+            padding: EdgeInsets.all(10.0),
+            child: TextField(
+                onChanged: bloc.changePassword,
+                obscureText: true,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  icon: Icon(Icons.lock_outline),
+                  labelText: 'Contraseña',
+                )));
+      },
+    );
   }
 
   Widget _crearBoton() {
