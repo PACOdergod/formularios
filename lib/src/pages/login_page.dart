@@ -111,7 +111,7 @@ class LoginPage extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
-              _crearBoton(),
+              _crearBoton(bloc),
             ],
           ),
         ),
@@ -138,7 +138,8 @@ class LoginPage extends StatelessWidget {
                 icon: Icon(Icons.alternate_email),
                 hintText: 'ejemplo@correo.com',
                 labelText: 'Correo electronico',
-                counterText: snapshot.data),
+                //counterText: snapshot.data,
+                errorText: snapshot.error),
             onChanged: bloc.changeEmail,
           ),
         );
@@ -157,24 +158,33 @@ class LoginPage extends StatelessWidget {
                 obscureText: true,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  icon: Icon(Icons.lock_outline),
-                  labelText: 'Contraseña',
-                )));
+                    icon: Icon(Icons.lock_outline),
+                    labelText: 'Contraseña',
+                    //counterText: snapshot.data,
+                    errorText: snapshot.error)));
       },
     );
   }
 
-  Widget _crearBoton() {
-    return RaisedButton(
-      onPressed: () {},
-      child: Container(
-        child: Text('Ingresar'),
-        padding: EdgeInsets.symmetric(horizontal: 50.0),
-      ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-      elevation: 0.0,
-      color: Colors.deepPurple,
-      textColor: Colors.white,
+  Widget _crearBoton(LoginBloc bloc) {
+    //formValidStream
+
+    return StreamBuilder(
+      stream: bloc.formValidStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return RaisedButton(
+          onPressed: snapshot.hasData ? () {} : null,
+          child: Container(
+            child: Text('Ingresar'),
+            padding: EdgeInsets.symmetric(horizontal: 50.0),
+          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+          elevation: 0.0,
+          color: Colors.deepPurple,
+          textColor: Colors.white,
+        );
+      },
     );
   }
 }
